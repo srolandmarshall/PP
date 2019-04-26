@@ -1,3 +1,10 @@
 body {
   font-family: sans-serif;
 }
+
+#today{
+  background-color: gray;
+}
+#tomorrow{
+  background-color: red;
+}

@@ -3,7 +3,6 @@ import jQuery from "jquery";
 const axios = require("axios");
 const cheerio = require("cheerio");
 
-let $ = jQuery.noConflict();
 const today = new Date();
 const tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
@@ -14,7 +13,7 @@ let tomorrow_str = formatDate(tomorrow);
 let today_url = getMLBUrl(today_str);
 let tomorrow_url = getMLBUrl(tomorrow_str);
 
-const getHTML = url => {
+const getPitchers = url => {
   axios
     .get("https://cors.io/?"+url)
     .then(response => {
@@ -22,11 +21,11 @@ const getHTML = url => {
       const $ = cheerio.load(html);
       let pitchers = [];
       $(".probable-pitchers__pitcher-name-link").each(function(i,l){
-        let pitcher = $(this.children[i].data)
-        console.log(pitcher)
+        let pitcher = $(this).text()
         pitchers.push(pitcher)
       })
       console.log(pitchers)
+      return pitchers
     })
     .catch(error => {
       console.log(error.response);
@@ -49,12 +48,14 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-let today_site_html = getHTML(today_url);
-let tomorrow_site_html = getHTML(tomorrow_url);
+let todays_pitchers = getPitchers(today_url);
+let tomorrows_pitchers = getPitchers(tomorrow_url);
 
+function updatePitchers(todays_pitchers,tomorrows_pitchers){
+  todays_pitchers.each(function(i,l){
+    console.log(l)
+    $("#todays_pitchers").append(l)
+  })
+}
 
-const all_html = () => {
-  console.log("tall_html")
-};
-
-$("#app").html(all_html());
+updatePitchers(todays_pitchers,tomorrows_pitchers)
