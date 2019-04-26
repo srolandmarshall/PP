@@ -1,7 +1,9 @@
 import "./styles.css";
-
+import jQuery from "jquery";
 const axios = require("axios");
 const cheerio = require("cheerio");
+
+let $ = jQuery.noConflict();
 const today = new Date();
 const tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
@@ -12,21 +14,16 @@ let tomorrow_str = formatDate(tomorrow);
 let today_url = getMLBUrl(today_str);
 let tomorrow_url = getMLBUrl(tomorrow_str);
 
-let today_site_html = "";
+let today_site_html = [];
 
 const getHTML = url => {
   axios
-    .get(url)
-    .then(function(response) {
-      // handle success
-      return response;
+    .get("https://google.com")
+    .then(response => {
+      console.log(response.data);
     })
-    .catch(function(error) {
-      // handle error
-      console.log(error);
-    })
-    .then(function() {
-      // always executed
+    .catch(error => {
+      console.log(error.response);
     });
 };
 
@@ -47,7 +44,7 @@ function formatDate(date) {
 }
 
 const all_html = () => {
-  return getHTML(today_url);
+  getHTML();
 };
 
 $("#app").html(all_html());

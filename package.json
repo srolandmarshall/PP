@@ -16,9 +16,7 @@
     "domain-browser": "1.2.0",
     "gulp": "4.0.1",
     "jquery": "3.4.0",
-    "node": "11.14.0",
-    "readable-stream": "3.3.0",
-    "transform": "1.1.2"
+    "node": "11.14.0"
   },
   "devDependencies": {
     "@babel/core": "7.2.0",
