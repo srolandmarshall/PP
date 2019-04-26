@@ -32,6 +32,9 @@ const getPitchers = url => {
     });
 };
 
+let todays_pitchers = getPitchers(today_url);
+let tomorrows_pitchers = getPitchers(tomorrow_url);
+
 function getMLBUrl(date_str) {
   return "https://www.mlb.com/probable-pitchers/" + date_str;
 }
@@ -48,14 +51,13 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-let todays_pitchers = getPitchers(today_url);
-let tomorrows_pitchers = getPitchers(tomorrow_url);
 
-function updatePitchers(todays_pitchers,tomorrows_pitchers){
-  todays_pitchers.each(function(i,l){
+
+const updatePitchers = () => {
+  todays_pitchers.forEach(function(l,i){
     console.log(l)
-    $("#todays_pitchers").append(l)
+    $("#todays_pitchers").append("<li>"+l+"</li>")
   })
 }
 
-updatePitchers(todays_pitchers,tomorrows_pitchers)
+updatePitchers()

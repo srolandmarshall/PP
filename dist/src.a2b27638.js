@@ -40238,6 +40238,9 @@ var getPitchers = function getPitchers(url) {
   });
 };
 
+var todays_pitchers = getPitchers(today_url);
+var tomorrows_pitchers = getPitchers(tomorrow_url);
+
 function getMLBUrl(date_str) {
   return "https://www.mlb.com/probable-pitchers/" + date_str;
 }
@@ -40252,17 +40255,14 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-var todays_pitchers = getPitchers(today_url);
-var tomorrows_pitchers = getPitchers(tomorrow_url);
-
-function updatePitchers(todays_pitchers, tomorrows_pitchers) {
-  todays_pitchers.each(function (i, l) {
+var updatePitchers = function updatePitchers() {
+  todays_pitchers.forEach(function (l, i) {
     console.log(l);
-    $("#todays_pitchers").append(l);
+    $("#todays_pitchers").append("<li>" + l + "</li>");
   });
-}
+};
 
-updatePitchers(todays_pitchers, tomorrows_pitchers);
+updatePitchers();
 },{"./styles.css":"src/styles.css","jquery":"node_modules/jquery/dist/jquery.js","axios":"node_modules/axios/index.js","cheerio":"node_modules/cheerio/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -40291,7 +40291,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55287" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51149" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
