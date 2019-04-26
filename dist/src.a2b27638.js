@@ -40223,11 +40223,18 @@ var today_str = formatDate(today);
 var tomorrow_str = formatDate(tomorrow);
 var today_url = getMLBUrl(today_str);
 var tomorrow_url = getMLBUrl(tomorrow_str);
-var today_site_html = [];
 
 var getHTML = function getHTML(url) {
   axios.get("https://cors.io/?" + url).then(function (response) {
-    console.log(response.data);
+    var html = response.data;
+    var $ = cheerio.load(html);
+    var pitchers = [];
+    $(".probable-pitchers__pitcher-name-link").each(function (i, l) {
+      var pitcher = $(this.children[i].data);
+      console.log(pitcher);
+      pitchers.push(pitcher);
+    });
+    console.log(pitchers);
   }).catch(function (error) {
     console.log(error.response);
   });
@@ -40247,8 +40254,11 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
+var today_site_html = getHTML(today_url);
+var tomorrow_site_html = getHTML(tomorrow_url);
+
 var all_html = function all_html() {
-  getHTML(today_url);
+  console.log("tall_html");
 };
 
 $("#app").html(all_html());
@@ -40280,7 +40290,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58420" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63518" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

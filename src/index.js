@@ -14,13 +14,19 @@ let tomorrow_str = formatDate(tomorrow);
 let today_url = getMLBUrl(today_str);
 let tomorrow_url = getMLBUrl(tomorrow_str);
 
-let today_site_html = [];
-
 const getHTML = url => {
   axios
     .get("https://cors.io/?"+url)
     .then(response => {
-      console.log(response.data);
+      const html = response.data;
+      const $ = cheerio.load(html);
+      let pitchers = [];
+      $(".probable-pitchers__pitcher-name-link").each(function(i,l){
+        let pitcher = $(this.children[i].data)
+        console.log(pitcher)
+        pitchers.push(pitcher)
+      })
+      console.log(pitchers)
     })
     .catch(error => {
       console.log(error.response);
@@ -43,8 +49,12 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
+let today_site_html = getHTML(today_url);
+let tomorrow_site_html = getHTML(tomorrow_url);
+
+
 const all_html = () => {
-  getHTML(today_url);
+  console.log("tall_html")
 };
 
 $("#app").html(all_html());
