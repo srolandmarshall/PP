@@ -18,7 +18,7 @@ let today_site_html = [];
 
 const getHTML = url => {
   axios
-    .get("https://google.com")
+    .get("https://cors.io/?"+url)
     .then(response => {
       console.log(response.data);
     })
@@ -44,7 +44,7 @@ function formatDate(date) {
 }
 
 const all_html = () => {
-  getHTML();
+  getHTML(today_url);
 };
 
 $("#app").html(all_html());
