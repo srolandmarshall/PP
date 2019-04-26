@@ -40214,6 +40214,7 @@ var axios = require("axios");
 
 var cheerio = require("cheerio");
 
+var league = "40156";
 var today = new Date();
 var tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
@@ -40222,7 +40223,7 @@ var tomorrow_str = formatDate(tomorrow);
 var today_url = getMLBUrl(today_str);
 var tomorrow_url = getMLBUrl(tomorrow_str);
 
-var getPitchers = function getPitchers(url) {
+var getPitchers = function getPitchers(url, day) {
   axios.get("https://cors.io/?" + url).then(function (response) {
     var html = response.data;
     var $ = cheerio.load(html);
@@ -40232,14 +40233,14 @@ var getPitchers = function getPitchers(url) {
       pitchers.push(pitcher);
     });
     console.log(pitchers);
-    return pitchers;
+    updatePitchers(pitchers, day);
   }).catch(function (error) {
     console.log(error.response);
   });
 };
 
-var todays_pitchers = getPitchers(today_url);
-var tomorrows_pitchers = getPitchers(tomorrow_url);
+var todays_pitchers = getPitchers(today_url, "today");
+var tomorrows_pitchers = getPitchers(tomorrow_url, "tomorrow");
 
 function getMLBUrl(date_str) {
   return "https://www.mlb.com/probable-pitchers/" + date_str;
@@ -40255,14 +40256,23 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-var updatePitchers = function updatePitchers() {
-  todays_pitchers.forEach(function (l, i) {
+var updatePitchers = function updatePitchers(pitchers, day) {
+  pitchers.forEach(function (l, i) {
     console.log(l);
-    $("#todays_pitchers").append("<li>" + l + "</li>");
+    $("#" + day + "s_pitchers").append(getLIByLink(getLinkByName(l)));
   });
 };
 
-updatePitchers();
+var getLinkByName = function getLinkByName(name) {
+  return {
+    url: "https://baseball.fantasysports.yahoo.com/b1/40156/playersearch?&search=" + name.split(' ')[0] + "%20" + name.split(' ')[1],
+    name: name
+  };
+};
+
+var getLIByLink = function getLIByLink(link) {
+  return "<li><a href=" + link.url + ">" + link.name + "</li>";
+};
 },{"./styles.css":"src/styles.css","jquery":"node_modules/jquery/dist/jquery.js","axios":"node_modules/axios/index.js","cheerio":"node_modules/cheerio/index.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -40291,7 +40301,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51149" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55287" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

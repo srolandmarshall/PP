@@ -3,6 +3,7 @@ import jQuery from "jquery";
 const axios = require("axios");
 const cheerio = require("cheerio");
 
+let league = "40156"
 const today = new Date();
 const tomorrow = new Date();
 tomorrow.setDate(today.getDate() + 1);
@@ -13,7 +14,7 @@ let tomorrow_str = formatDate(tomorrow);
 let today_url = getMLBUrl(today_str);
 let tomorrow_url = getMLBUrl(tomorrow_str);
 
-const getPitchers = url => {
+const getPitchers = (url, day) => {
   axios
     .get("https://cors.io/?"+url)
     .then(response => {
@@ -25,15 +26,15 @@ const getPitchers = url => {
         pitchers.push(pitcher)
       })
       console.log(pitchers)
-      return pitchers
+      updatePitchers(pitchers, day)
     })
     .catch(error => {
       console.log(error.response);
     });
 };
 
-let todays_pitchers = getPitchers(today_url);
-let tomorrows_pitchers = getPitchers(tomorrow_url);
+let todays_pitchers = getPitchers(today_url, "today");
+let tomorrows_pitchers = getPitchers(tomorrow_url, "tomorrow");
 
 function getMLBUrl(date_str) {
   return "https://www.mlb.com/probable-pitchers/" + date_str;
@@ -51,13 +52,20 @@ function formatDate(date) {
   return [year, month, day].join("-");
 }
 
-
-
-const updatePitchers = () => {
-  todays_pitchers.forEach(function(l,i){
+const updatePitchers = (pitchers, day) => {
+  pitchers.forEach(function(l,i){
     console.log(l)
-    $("#todays_pitchers").append("<li>"+l+"</li>")
+    $("#"+day+"s_pitchers").append(getLIByLink(getLinkByName(l)))
   })
 }
 
-updatePitchers()
+const getLinkByName = (name) => {
+  return {
+    url: "https://baseball.fantasysports.yahoo.com/b1/40156/playersearch?&search="+name.split(' ')[0]+"%20"+name.split(' ')[1],
+    name: name
+  }
+}
+
+const getLIByLink = (link) => {
+  return "<li><a href="+link.url+">"+link.name+"</li>"
+}
